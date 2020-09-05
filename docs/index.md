@@ -9,11 +9,16 @@ The exercises take a basic Spring Boot application and containerise it with Dock
 
 ## The Labs
 ### Lab 1 Working with Docker
-In this exercise you will see the basics of running docker containers from images and how to manage the container lifecycle. [Try Working with Docker](module2_docker.md)
+In this exercise you will see the basics of running docker containers from images and how to manage the container lifecycle. 
+
+[Try Working with Docker](module2_docker.md)
 
 ### Lab 2 Working with Images
-In this exercise you will create your own Docker image from a Dockerfile that you will create. You will then run a container based upon that image and access the application through a Web browser. [Try Working with Images](module3_images.md)
+In this exercise you will create your own Docker image from a Dockerfile that you will create. You will then run a container based upon that image and access the application through a Web browser. 
+
+[Try Working with Images](module3_images.md)
 
 ### Lab 3 Working wih OpenShift
 In this exercise, you will get your application running in an OpenShift environment.
+
 [Try Working with OpenShift](module5_openshift.md)
