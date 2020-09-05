@@ -18,9 +18,9 @@ Once you have a terminal available on a machine that is running Docker you can p
    
 ## Part 2: Run a Container
 
-Let's run up a container. We will use a  sample image from Dockerhub that contains a simple Spring Boot Application. The source code for the application we will be deploying can be found at https://github.com/nicktodd/basicspringapp. You don't need to go here since the Docker image is already in available.
+Let's run up a container. We will use a  sample image from Dockerhub that contains a simple Spring Boot Application. The source code for the application we will be deploying can be found at https://github.com/nicktodd/basicspringapp. It is a basic Spring Boot application sample. You will see the source code in a later exercise.
 
-3. Initially, let's run the container in the simplest way. Run the following command.
+3. Initially, let's just run the container in the simplest way. Run the following command.
 
  ```docker run nicktodd40/compactdiscs ```
 
