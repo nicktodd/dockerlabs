@@ -22,3 +22,17 @@ In this exercise you will create your own Docker image from a Dockerfile that yo
 In this exercise, you will get your application running in an OpenShift environment.
 
 [Try Working with OpenShift](module5_openshift.md)
+
+### Appendix A Linking Containers Together
+In this exercise, you will 
+1. Run MongoDB in a container
+2. Compile and build a C# .NET Core application using a container.
+3. Run a container that has the .NET core application within it that uses the MongoDB database. 
+   
+You will have to link the .NET Core container to the MongoDB container.
+
+[Try Linking Containers](appendix_linking_containers.md)
+
+### Appendix B Running a Spring Boot Application on Docker and OpenShift 4 using Fabric8   
+In this exercise, you will use Fabric8 which is a Maven plugin that can build a Docker image for a Spring Boot application without a Dockerfile at all! You can try it out here:
+[Try Using Fabric8](https://bitbucket.org/lightspeed/dockertraining/src/master/docs/)
