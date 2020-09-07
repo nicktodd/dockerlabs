@@ -18,21 +18,21 @@ Once you have a terminal available on a machine that is running Docker you can p
    
 ## Part 2: Run a Container
 
-Let's run up a container. We will use a  sample image from Dockerhub that contains a simple Spring Boot Application. The source code for the application we will be deploying can be found at https://github.com/nicktodd/basicspringapp. It is a basic Spring Boot application sample. You will see the source code in a later exercise.
+Let's run up a container. We will use Tomcat 9 from Dockerhub.
 
 3. Initially, let's just run the container in the simplest way. Run the following command.
 
- ```docker run nicktodd40/compactdiscs ```
+ ```docker run tomcat:9 ```
 
-First, you will see the image download along with some other image layers which will be explained later. This can sometimes take a few minutes and it might seem like nothing is happening. Just be patient with your network. Once the image has downloaded, the container will launch and you will see the output to the console from Spring Boot.
+First, you will see the image download along with some other image layers which will be explained later. This can sometimes take a few minutes and it might seem like nothing is happening. Just be patient with your network. Once the image has downloaded, the container will launch and you will see the output to the console.
 
 An example of the kind of output you will see is shown below:
 
 ![Running a container](img/docker-run.png)
 
-6. Once it is complete, you will notice that you have 'lost' your terminal since the docker container is now running in the foreground. To get your terminal back, use **Ctrl-C**.
+1. Once it is complete, you will notice that you have 'lost' your terminal since the docker container is now running in the foreground. To get your terminal back, use **Ctrl-C**.
     
-7. What has happened to the container? Is it still running? We can find out using docker ps -a. The -a means all including stopped containers.
+2. What has happened to the container? Is it still running? We can find out using docker ps -a. The -a means all including stopped containers.
 
 ```docker ps -a```
 
@@ -53,8 +53,9 @@ An example of the kind of output you will see is shown below:
 
 ```docker ps -a```
 
-## Part 3 Adding Routing
-Although the container appears to have been running, we had no way of visiting it in the browser. Also, we lost the terminal as soon as we launched it. Let's resolve those problems now.
+## Part 3 Adding Routing#
+
+You will now run a container that contains a simple Spring Boot Application. The source code for the application we will be deploying can be found at https://github.com/nicktodd/basicspringapp. It is a basic Spring Boot application sample. You will see the source code in a later exercise.
 
 1. Launch a container from the image again, but this time with two attributes
    - **-d** to run it in the background (detached)
