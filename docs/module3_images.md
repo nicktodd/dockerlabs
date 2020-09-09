@@ -104,11 +104,7 @@ The output will look something like the below:
 
 4. To test it in the browser, now visit the following URL:
 
-```http://[hostname]:8080/trades```
-
-If it is working, you will see a list of trade messages in the form of JSON data:
-
-![The Working Trades Application](img/trades.png)
+```http://[hostname]:8080/compactdiscs```
 
 
 ## Part 4 Manage the Images
