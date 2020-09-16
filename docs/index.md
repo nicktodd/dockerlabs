@@ -36,3 +36,8 @@ You will have to link the .NET Core container to the MongoDB container.
 ### Appendix B Running a Spring Boot Application on Docker and OpenShift 4 using Fabric8   
 In this exercise, you will use Fabric8 which is a Maven plugin that can build a Docker image for a Spring Boot application without a Dockerfile at all! You can try it out here:
 [Try Using Fabric8](https://bitbucket.org/lightspeed/dockertraining/src/master/docs/)
+
+### Appendix C Linking Containers using Docker Compose
+In this simple exercise you will see how Docker compose can be used to build and deploy an application that involves two containers.
+[Try Using Docker Compose](docker-docker-compose.md)
+
