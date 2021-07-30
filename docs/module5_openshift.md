@@ -99,6 +99,36 @@ This will be useful familiarisation as when you are dealing with more sophistica
 4. Review the contents of this file. You will notice that the image is referenced along with various other configuration properties of the application. 
 
 
+## Part 4 Deploy the Application Based on a Project in Git
+
+You have already successfully deployed a project using a pre-built Docker image from Dockerhub. OpenShift can also deploy a project from a Git repository where there is a Dockerfile. When you do it this way, it will automatically check out the project, build the Docker image, and then deploy it.
+
+1. Back at your terminal run the following command to create a new project.
+
+```oc new-project sample-project-2```
+
+2. This will create another project in OpenShift. Now create a new application in the project, but point it to the following Git repository. Take a look at the repository in a Web browser before you run this command and note the Dockerfile that is in there.
+
+```oc new-app https://github.com/nicktodd/basicspringapp.git```
+
+This will now take some time to go through and clone the Git repo and then build the image based upon the contents of the Dockerfile.
+
+3. Run the `oc status` command to see how it is progressing.
+
+4. Now also run the following command to add the routing:
+
+``` oc expose svc/basicspringapp ```
+
+5. Now return to the OpenShift Web console and explore the Pods and the application. It will all be under your new project. You may need to refresh the browser to see the new project.
+
+6. Finally, test the URL for the application to see if it works. The link is shown in the terminal from when you ran `oc status`. You can also find it in the Web console, if you navigate to **Applications** and then **Routes**.
+
+## Summary
+
+Congratulations! You have successfully deployed an application to OpenShift, once using a Docker image from Dockerhub and then using a Git repository which contains a Dockerfile. In that case, Openshift build the Docker image.
+
+
+
 ## Summary
 
 In this exercise, you have successfully deployed a an application to OpenShift. 
