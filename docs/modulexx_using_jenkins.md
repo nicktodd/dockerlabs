@@ -4,13 +4,19 @@ In this exercise you will use Jenkins to build a Spring Boot application and the
 
 ## Prerequisites
 
-In order to complete this exercise, you must already have the following
+In order to complete this exercise, you can either modify one of your own Spring projects, or you can use a sample one.
+
+If you wish to use your own project, you must already have the following
 
 * A Java SpringBoot application in a Git repository
 * A Dockerfile that can be used to successfully package up the application in Docker. If this cannot be demonstrated on your local computer, then it will not work when you try and deploy it via Jenkins
 * The Docker image should have successfully been run on OpenShift before
 
-If you can tick all of those boxes, then you are good to go!
+Alternatively, you can use the sample project which is already set up and ready to be deployed. If you wish to use this sample project, review the Jenkinsfile in part 1 but start at part 2. Your Git repository is as follows:
+
+```
+https://github.com/nicktodd/jenkinsopenshiftspring
+```
 
 ## Part 1 Create the Jenkinsfile
 
@@ -85,4 +91,28 @@ You have been provided with a Linux machine that already has both Jenkins and Op
 ![Running a build](img/jenkins-build.png)
 
 
+## Part 4 Testing your Application in the Browser
 
+Once your application is deployed, you can verify that is in OpenShift by logging into the OpenShift console and locating your new application and selecting its routing link.
+
+1. Using your Web browser, login to your OpenShift server. It is running on the same  machine as the Jenkins server, so the URL will be something like:
+
+https://MACHINENAME:8443
+
+2. At the login screen, enter your credentials, which are typically admin/admin for a temporary test installation.
+
+3. On the right, you will see your project in the list of projects.
+
+![OpenShift Projects](img/project-list.png)
+
+You will likely only have one project in your list!
+
+4. Select your project.
+
+5. Expand your project in the main screen.
+
+![OpenShift Running Application ](img/openshift-running-app.png)  
+
+6. You will see your running pod, and above it, you will see the URL to your application. You can click on the link to see your running SpringBoot application. 
+
+![Running SpringBoot Application](img/cds-webpage.png)
