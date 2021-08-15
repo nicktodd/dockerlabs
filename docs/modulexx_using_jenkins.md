@@ -116,3 +116,20 @@ You will likely only have one project in your list!
 6. You will see your running pod, and above it, you will see the URL to your application. You can click on the link to see your running SpringBoot application. 
 
 ![Running SpringBoot Application](img/cds-webpage.png)
+
+
+## Part 5 Deploying an Application that uses a Database
+
+The application deployed so far is a standalone application that has no database. You are now going to see how an application could be deployed that uses a database at the backend. 
+
+For convenience, if you are using one of our OpenShift servers, we have installed MySQL on it for you, so you can make that machine the database used by your application. If you are using our lab environment, the username and password for MySQL is conygre/C0nygre-C0nygre and you can connect to it from your MySQL Workbench.
+
+To complete this exercise, you will need a Git repository containing a SpringBoot application. You can take a copy of the following project if you would like to and then make the necessary changes to it.
+
+https://github.com/nicktodd/jenkinsopenshiftspringdatabase
+
+
+Get the code from this project into your own Git repository. An easy way to complete this is to clone the repository above, and copy the files from it into an empty Git repository that you have created.
+
+Once you have that project complete, you will need to connect to your remote database to set up the necessary tables.
+
