@@ -41,3 +41,15 @@ In this exercise, you will use Fabric8 which is a Maven plugin that can build a 
 In this simple exercise you will see how Docker compose can be used to build and deploy an application that involves two containers.
 [Try Using Docker Compose](docker-docker-compose.md)
 
+# Jenkins
+
+## Lab 1 Installing Jenkins and Running a Basic Project
+In this exercise, you will install Jenkins on a Windows VM, and then install and build a basic Maven project on it.
+
+[Installing Jenkins](installing_jenkins.md)
+
+## Lab 2 Using Jenkins Remotely with a Jenkinsfile
+In this exercise, you will not be using your local Jenkins, but rather a remote pre-configured Jenkins environment. It will be used to build and deploy a Java SpringBoot application to OpenShift.
+
+[Using Jenkins to Deploy to OpenShift](modulexx_using_jenkins.md)
+
