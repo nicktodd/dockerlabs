@@ -30,7 +30,7 @@ An example of the kind of output you will see is shown below:
 
 ![Running a container](img/docker-run.png)
 
-1. Once it is complete, you will notice that you have 'lost' your terminal since the docker container is now running in the foreground. To get your terminal back, use **Ctrl-C**.
+1. Once it is complete, you will notice that you have 'lost' your terminal since the docker container is now running in the foreground. To get your terminal back, use **Ctrl-C**. If **Ctrl-C** doesn't work, simply create a new terminal and SSH into your machine again.
     
 2. What has happened to the container? Is it still running? We can find out using docker ps -a. The -a means all including stopped containers.
 
@@ -53,23 +53,23 @@ An example of the kind of output you will see is shown below:
 
 ```docker ps -a```
 
-## Part 3 Adding Routing#
+## Part 3 Adding Routing
 
 You will now run a container that contains a simple Spring Boot Application. The source code for the application we will be deploying can be found at https://github.com/nicktodd/basicspringapp. It is a basic Spring Boot application sample. You will see the source code in a later exercise.
 
 1. Launch a container from the image again, but this time with two attributes
    - **-d** to run it in the background (detached)
-   - **-p 8080:8080** to handle the routing
+   - **-p 8081:8080** to handle the routing
 
- ```docker run -d -p 8080:8080 nicktodd40/compactdiscs ```
+ ```docker run -d -p 8081:8080 nicktodd40/compactdiscs ```
 
  2. Note how quick it ran, and that also it didn't download the image again. That is because you already have the image locally so it does not need to download it again.
 
-The -p 8080:8080 is mapping the ports. the 8080 on the left is the VM (referred to as the Docker host) and the 8080 on the right is the container port, since Spring Boot applications run on port 8080.
+The -p 8081:8080 is mapping the ports. the 8081 on the left is the VM (referred to as the Docker host) and the 8080 on the right is the container port, since Spring Boot applications run on port 8080.
 
 3. You can now visit your Spring Boot application from the browser:
 
-```http://[hostname]:8080```
+```http://[hostname]:8081```
 
 For example, on a local machine, the hostname will be localhost.
 
