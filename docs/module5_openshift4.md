@@ -170,8 +170,3 @@ image-registry.openshift-image-registry.svc:5000/YOUR-NAME-sample-project-2/basi
 Congratulations! You have successfully deployed an application to OpenShift, once using a Docker image from Dockerhub and then using a Git repository which contains a Dockerfile. In that case, Openshift build the Docker image.
 
 
-
-## Summary
-
-In this exercise, you have successfully deployed a an application to OpenShift. 
-
