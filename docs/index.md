@@ -21,7 +21,7 @@ In this exercise you will create your own Docker image from a Dockerfile that yo
 ### Lab 3 Working wih OpenShift
 In this exercise, you will get your application running in an OpenShift environment.
 
-[Try Working with OpenShift](module5_openshift.md)
+[Try Working with OpenShift 3](module5_openshift3.md)
 
 ### Appendix A Linking Containers Together
 In this exercise, you will 

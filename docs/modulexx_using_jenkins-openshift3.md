@@ -1,4 +1,4 @@
-# Use Jenkins to Deploy an Application to OpenShift
+# Use a Locally Running Jenkins to Deploy a Locally Running OpenShift 3 Cluster
 
 In this exercise you will use Jenkins to build a Spring Boot application and then deploy it to an OpenShift Server.
 

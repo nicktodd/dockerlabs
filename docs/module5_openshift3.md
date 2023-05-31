@@ -1,4 +1,4 @@
-# Module 5 Working with OpenShift - Docker at Scale
+# Module 5 Working with OpenShift 3 - Docker at Scale
 In this exercise, you will now see how to deploy our sample application to OpenShift. You can either use the OpenShift playground, or be logged into a machine with OpenShift installed. You will run a container from the terminal. You will then visit the Web based management console of OpenShift to configure the routing, and finally, you will test your application through the Web browser.
 
 ## Before you Begin
