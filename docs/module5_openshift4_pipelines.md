@@ -6,6 +6,8 @@ In this exercise you will use the pipelines feature of Openshift to deploy a Spr
 
 It is recommended that you complete this exercise with the supplied sample projects, following which you may wish to experiment with your own projects. You will need to have your own Git repository.
 
+Before you start you will need a login to the Openshift cluster. Before attempting part 5 you need to have run the `oc login` command that the instructor will provide you with.
+
 ## Part 1 Fork a copy of the projects
 
 You will need to have a copy of the two projects in your own Github account. Repeat the following steps for these two git repositories:
@@ -48,7 +50,7 @@ pom.xml file.
 ![Git url](img/os4pipelines_git_url.png)
 
 9. Paste this value into the **Git Repo url** box
-10. The screen should say that a builder image has been detected. By default this will use the latest version of Java.
+10. The screen should say that a builder image has been detected. This means that Openshift knows how to deploy this application - we do not need to build the Jar file or create a Dockerfile because Openshift knows how to do both of those! However by default this will use the latest version of Java, so we will change that.
 Click on **Edit Import Strategy**.
 11. Ensure Java is selected and then change the **Builder Image version** to `openjdk-8-ubi8`.
 
@@ -115,22 +117,56 @@ You can visit the url but it will not be able to get any data -  if you view the
 
 ## Part 5 Linking the applications
 
-To make our application work we need to edit the server name. Before starting this section, ensure you have set up the webhook for the application in Github.
+To make our application work we need to provide the front end application with the URL for our rest API. Review the src/data/DataFunctions.js file - the application uses "localhost" unless an environment variable called REACT_APP_SERVER_URL has been set. We therefore need to set this environment variable as part of the build process. We can configure this within the application definition.
 
 1. Click on the **Topology** link in the left menu.
 2. Click on the image for the **back-end server application** (payment-gateway)
 3. At the right of the screen, go to the **Resources** tab and scroll down to find the **Routes**.
 4. Copy the URL shown.
-5. We now need to make a change to front-end application code. You can do this either by cloning the
-project locally, or you can edit files directly in Github if you prefer:
 
-Find the file **/src/data/DataFunctions.js** and edit line 3 so that the server is set to the value you copied.
+5. We will store this value in a configmap - this will allow us to potentially re-use it in any other application, and it will be easy to locate it and change it if required.
 
-6. Commit the changes, wait for the rebuild to complete.
+You can create a configmap through the web interface or using a YAML file - we'll use a yaml file.
+
+Create a text file called env-settings.yaml containing the following. Change the value of namespace to your project name, and the value of SERVER_URL to the url you copied in step 4 of this section. 
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-settings
+  namespace: *your_project_name*
+data:
+  REACT_APP_SERVER_URL: "*https://...*"
+```
+
+6. Run the following commmand to create the config map
+
+`oc apply -f env-settings.yaml`
+
+7. In the console, go to the **topology** view.
+
+8. **Right click on the payments-ui** application and choose **edit payments-ui**
+
+9. Scroll to the bottom of the page, and just above the save button click on the **Deployment** link.
+
+10. Click on Add from ConfigMap or Secret
+
+12. Set **name** to REACT_APP_SERVER_URL. 
+
+13. Change **Select a Resource** to env-settings, and then **select a key** can be set to the key name you entered.
+
+![deployment configmap inage](img/deployment-configmap.png)
+
+14. Click on **save**
+
+15. A new pipeline run will start automatically - watch the logs until this is complete
 
 ## Part 6 Test the application in the browser
 
-1. Visit the front-end application by clicking on the **Open URL** icon
-2. Click on **Find a transaction**
-3. Chose a country
-4. Check that some transactions appear on the screen for the selected country.
+1. Click on the **Topology** link in the left menu.
+2 Visit the front-end application by clicking on the **Open URL** icon for the payments-ui application
+3. Click on **Find a transaction**
+4. Check that a list of countries is shown in the dropdown list.
+5. **Chose a country** from the list.
+6. Check that some transactions appear on the screen for the selected country.
