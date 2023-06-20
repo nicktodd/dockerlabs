@@ -23,6 +23,8 @@ In this exercise, you will get your application running in an OpenShift environm
 [Try Working with OpenShift](module5_openshift4.md)
 
 ### Lab 4: Deploying with pipelines
-In this exercise, you will deploy two applications to the OpenShift cluster, with a pipeline to automate the build and deployment of code changes. 
+In this exercise, you will deploy two applications to the OpenShift cluster, with a pipeline to automate the build and deployment of code changes. To undertake this lab, you need to have your own account with either Github or Bitbucket - choose the version of the lab.
 
-[Try Deploying with pipelines](module6_openshift4_pipelines.md)
+[Try Deploying with pipelines (Github version)](module6_openshift4_pipelines.md)
+
+[Try Deploying with pipelines (Bitbucket version)](module6_openshift4_pipelines_bitbucket.md)

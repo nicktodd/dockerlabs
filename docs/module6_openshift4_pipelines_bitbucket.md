@@ -1,37 +1,37 @@
-# Lab 4 - Deploying to OpenShift 4 with Pipelines (Github version)
+# Lab 4 - Deploying to OpenShift 4 with Pipelines (Bitbucket version)
 In this exercise we will create a pipeline application, which will be linked to a git repository, and will automatically update the deployed container when changes are committed to git.
 
 In this exercise you will complete the following tasks:
 
-1. You will deploy an application directly from a Github repository, with a Tekton pipeline
+1. You will deploy an application directly from a Bitbucket repository, with a Tekton pipeline
 2. You will configure the trigger for the pipeline, so that changes to git automatically trigger the build and deployment processes
 3. Finally we'll create and run a second pipeline application which will be a front-end to connect to our Spring application, and we'll see how to configure it.
 
 ## Prerequisites
-**You will need to have your own Github account**. If you would prefer to use Bitbucket rather than Github, [use this lab instead](module6_openshift4_pipelines_bitbucket.md).
+ **You will need to have your own Bitbucket account**. If you would prefer to use Github rather than Bitbucket, [use this lab instead](module6_openshift4_pipelines.md).
 
-It is recommended that you complete this exercise with the supplied sample projects, following which you may wish to experiment with your own projects. 
+It is recommended that you complete this exercise with the supplied sample projects, following which you may wish to experiment with your own projects.
 
 Before you start you will need also need a login to the Openshift cluster. 
 
 ## Part 1: Fork a copy of the projects
 
-You will need to have a copy of the two projects in your own Github account so that you can make changes to the code and configure the automatic build trigger. Repeat the following steps for each of these two git repositories:
+You will need to have a copy of the two projects in your own Bitbucket account so that you can make changes to the code and configure the automatic build trigger. Repeat the following steps for each of these two git repositories:
 
-* <https://github.com/vppmatt/paymentgateway-standalone> - this is the Spring back-end application.
-* <https://github.com/vppmatt/payments-ui> - this is a react based front-end
+* <https://bitbucket.org/neuedamats/paymentgateway-standalone> - this is the Spring back-end application.
+* <https://bitbucket.org/neuedamats/payments-ui> - this is a react based front-end
 
-1. Ensure you are logged in to Github.
+1. Ensure you are logged in to Bitbucket.
 
 2. Visit the project URL for the project.
 
-3. Click on **Fork** at the top right corner of the web page.
+3. Click on the **3 dots** at the top right corner of the web page then click on **Fork this repository**.
 
-![Fork Project](img/os4pipelines_fork.png)
+![Fork Project](img/os4pipelines_fork_bitbucket.png)
 
-4. Do not edit the repository name and leave the checkbox ticked to copy just the master branch.
+4. Create a new project (we suggest you call it payments). Do not edit the repository name and do not tick the box to make it a private repository.
 
-5. Click on **Create Fork**.
+5. Click on **Fork repository**.
 
 ## Part 2: Create an Application with a Pipeline Based on a Project in Git
 
@@ -39,7 +39,7 @@ You will need to have a copy of the two projects in your own Github account so t
 but we'll ensure it is configured to run with the version of Java specified in the
 pom.xml file.
 
-The pom.xml file can be viewed at <https://github.com/vppmatt/paymentgateway-standalone/blob/main/pom.xml>
+The pom.xml file can be viewed at <https://bitbucket.org/neuedamats/paymentgateway-standalone/src/main/pom.xml>
 
 2. Ensure you are logged in to the openshift cluster web console and you are in the **Developer** rather than **Administrator** view.
 
@@ -53,11 +53,15 @@ The pom.xml file can be viewed at <https://github.com/vppmatt/paymentgateway-sta
 
 5. Click on **import from git** option.
 
-6. Obtain the git url from the Github webpage for the project by clicking on the green **code** button. **Ensure you are using the forked copy of the project in your own Github account**. 
+6. Obtain the git url from the Bitbucket webpage for the project by clicking on the **clone** button at the top right of the screen. **Ensure you are using the forked copy of the project in your own Bitbucket account**. 
 
-![Git url](img/os4pipelines_git_url.png)
+![Git url](img/os4pipelines_git_url_bitbucket.png)
 
-7. Paste this value into the **Git Repo url** box
+7. Paste this value into the **Git Repo url** box. Remove the words `git clone` at the start of the line. You must also remove the username from the url. For example it will initially be in the format `https://your-username@bitbucket.org...`.  Tou must change this to `https://bitbucket.org...`
+
+**BE CAREFUL with this step** - if you have the URL in the correct format, then the system will show the word "validated" below the URL. If it says "URL is valid but a git type could not be identified." then you have not got the URL in the correct format.
+
+![Valid Bitbucket URL](img/validated_git_url_bitbucket.png)
 
 8. After a few seconds the screen should say that a builder image has been detected. This means that OpenShift knows how to deploy this application - we do not need to clone the git repository, build the Jar file, or write a Dockerfile because Openshift knows how to do all of these tasks. However by default it will use the latest version of Java, so we will change that to use the version that the project expects.
 
@@ -74,7 +78,7 @@ _Note: the Java versions presented contain either ubi or el in the name. These r
 12. Ensure the **Resource type** is set to `Deployment`.
 
 13. Check the **Add pipeline** box. This will create a 3 step pipeline
-(fetch the repository from Github, build the artifacts including the container, create/update the OpenShift deployment and all the resources it needs).
+(fetch the repository from Bitbucket, build the artifacts including the container, create/update the OpenShift deployment and all the resources it needs).
 
 14. Ensure the **target port** is set to `8080`.
 
@@ -95,38 +99,47 @@ You should now be looking at the back-end server application's Swagger page. If 
 
 ![Swagger page](img/os4pipelines_swagger.png)
 
-## Part 3 Use the pipeline's webhook to automatically trigger a rebuild when changes are pushed to Github
+## Part 3 Use the pipeline's webhook to automatically trigger a rebuild when changes are pushed to Bitbucket
 
 1. In the web console, click on **Pipelines** in the left menu. 
 
 2. Open the paymentgateway pipeline by clicking on the link in the **Name** column.
 
-3. Copy the **trigger templates** link.
+3. This page contains a link to a trigger template - we need to copy this link and apply it to our BitBucket repository. However BitBucket's webhooks are not compatible with the default trigger template that OpenShift gives us, so we first need to remove the trigger and create a new one.
 
-4. Go to the Github page for the application and click on **settings**.
+From the **Actions** menu at the top right, click on **Remove Trigger**. Select the trigger template, and click on **Remove**.
 
-5. Click on **webhooks** in the left menu.
+4. From the **Actions** menu at the top right, click on **Add Trigger**. Click on the option to **Select the Git Provider Type**, and start typing `bitbucket` - you need to select the option `bitbucket-cloud-push`.
 
-6. Click on **Add webhook**, and paste the URL you copied into the **Payload URL** field.
+5. Do not change anything else on this screen, and click on **Add**.
 
-7. Change the **Content type** to `application/json`. You can leave all the other fields as their default value.
+6. Copy the **trigger templates** link.
 
-8. Click on **Add webhook**.
+7. Go to Bitbucket and navigate to the application. Click on **Repository settings** on the left hand menu.
 
-9. Make a change to the code within Github and commit it. You can do this either by cloning the
-project locally, or you can edit files directly in Github if you prefer:
+8. In the Workflow section of the left hand menu, click on **Webhooks**.
+
+9. Click on **Add webhook**. Set the Title to `openshift` and and paste the URL you copied into the **URL** field.
+
+10. Ensure the status checkbox for **Active** is checked, and the **Push** option is checked in the Triggers section. 
+
+11. Click on **Save**.
+
+12. Make a change to the code within Bitbucket and commit it. You can do this either by cloning the project locally, or you can edit files directly in Bitbucket if you prefer:
 
 Find the file **/src/main/java/com/multicode/payments/config/SwaggerConfig.java** and edit the description on line 28. This description appears near the top of the Swagger page.
 
-10. Because we set up the webook, Github should have automatically notified our cluster that the code changed,and this should trigger the pipeline to be re-executed.
+If you are editing the file directly in Bitbucket, ensure you click on **Approve** after you have comitted the change.
 
-11. In the Openshift console, click on **Topology** in the left menu. 
+13. Because we set up the webook, Bitbucket should have automatically notified our cluster that the code changed,and this should trigger the pipeline to be re-executed.
 
-12. The Payment-gateway component should show that a build is currently taking place. Click on the **build icon** to watch the build.
+14. In the Openshift console, click on **Topology** in the left menu. 
 
-13. When the build has completed, check the live application now shows your new description.
+15. The Payment-gateway component should show that a build is currently taking place. Click on the **build icon** to watch the build.
 
-14. Click on **Pipelines** in the left menu and explore the each of the tabs for the pipeline you created in the Openshift console.
+16. When the build has completed, check the live application now shows your new description.
+
+17. Click on **Pipelines** in the left menu and explore the each of the tabs for the pipeline you created in the Openshift console.
 
 ## Part 4 Create a pipeline for the front-end application
 
@@ -208,7 +221,7 @@ To make our application work we need to provide the front end application with t
 
 2. Click on the **project** link on the left hand menu.
 
-3. at the top right of hte screen click on **Actions**, then **Delete project**. 
+3. At the top right of the screen click on **Actions**, then **Delete project**. 
 
 ## Summary
 
