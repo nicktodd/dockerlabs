@@ -54,6 +54,14 @@ You should see that there is 1 running pod.
 
 ```oc expose service/payment-gateway```
 
+In case you were wondering how it knows which port to expose, the Dockerfile used to create the image had the line:
+
+```
+EXPOSE 8080
+```
+
+This acts as a hint to Openshift that this is the port to expose to the outside.
+
 ![oc expose](./img/oc-expose.png)
 
 5. To find out the URL, you can use ```oc status``` again.
@@ -95,7 +103,7 @@ A new application can be set up either from the Web console or the terminal. Let
 
 13. OpenShift deployments are configured using YAML. To see the YAML file, click the **YAML** tab. Review the contents. Although we will not be going through the detail of this as part of our training, you can see the configuration of your running pod. However, you will notice that the image is referenced along with various other configuration properties of the application. 
 
-14. Clean up all the resoruces by deleting the application. Click on **Topology** on the this left hand menu to return to the applications screen, then **right click on the application circle**, and select **delete deployment**.
+14. Clean up all the resources by deleting the application. Click on **Topology** on the this left hand menu to return to the applications screen, then **right click on the application circle**, and select **delete deployment**.
 
 ![delete deployment](img/delete-deployment.png)
 
