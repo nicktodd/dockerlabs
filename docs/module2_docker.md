@@ -2,9 +2,11 @@
 In this first exercise, you will see how to obtain Docker images from a registry such as Artifactory. We will then run an example Docker image as a container in our Virtual Machine, and finally we will explore the container lifecycle.
 
 ## Before you Begin
-Any installation of Docker can be used for this exercise. If you don't have Docker installed anywhere, You can use the Docker Playground
+Connect to the linux machine using the following command 
 
-To use the playground, open a Web browser, and visit https://labs.play-with-docker.com/ and create an account. 
+```ssh username@servername``` 
+
+using the username, servername and password provided by your instructor.
 
 Once you have a terminal available on a machine that is running Docker you can proceed.
 
@@ -40,7 +42,7 @@ An example of the kind of output you will see is shown below:
 
 ![container id](img/docker-container-id.png)
 
-Make a note of the first two characters of the ID (in the example below that is "cc").
+Make a note of the first two characters of the ID (in the example above that is "cc").
 
 5. The container status is shown in the STATUS column - it should say "Exited" which means that it has stopped running.
 
@@ -50,7 +52,7 @@ If the container status shows the value "Up", which may be the case if using Ctr
 
 ```docker stop [2 digits]```
 
-The terminal will respond with the same 2 digits back. Now run ps -a again to check the container is stopped.
+The terminal will respond with the same 2 digits back. Now run docker ps -a again to check the container is stopped.
 
 ```docker ps -a```
 
@@ -84,13 +86,11 @@ The image for this application is hosted on a different repository (part of the 
 
  2. When the container is running, you'll be presented with the id of the container. 
 
-The -p 8081:8080 is mapping the ports. the 8081 on the left is the VM (referred to as the Docker host) and the 8080 on the right is the container port, since Spring Boot applications run on port 8080.
+The -p 8081:8080 is mapping the ports. the 8081 on the left is the port on the machine we will be able to access the application with (referred to as the Docker host) and the 8080 on the right is the container port, since Spring Boot applications run on port 8080.
 
 3. You can now visit your Spring Boot application from the browser:
 
 ```http://[hostname]:8081```
-
-For example, on a local machine, the hostname will be localhost.
 
 You can now see the running application in your browser:
 
