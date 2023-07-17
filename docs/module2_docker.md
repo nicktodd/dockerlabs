@@ -80,26 +80,33 @@ The image for this application is hosted on a different repository (part of the 
 
 1. Launch a container from the image, but this time with two attributes
    - **-d** to run it in the background (detached)
-   - **-p 8081:8080** to handle the routing
+   - **-P** to handle the routing
 
- ```docker run -d -p 8081:8080 public.ecr.aws/e2r0q3k0/payment-gateway:latest ```
+ ```docker run -d -P public.ecr.aws/e2r0q3k0/payment-gateway:latest ```
 
- 2. When the container is running, you'll be presented with the id of the container. 
+ 2. When the container is running, you'll be presented with the id of the container. Note the first few characters of the ID.
 
-The -p 8081:8080 is mapping the ports. the 8081 on the left is the port on the machine we will be able to access the application with (referred to as the Docker host) and the 8080 on the right is the container port, since Spring Boot applications run on port 8080.
+The `-P` flag is telling our container to expose a port so that we can access it from the local machine / the internet. Typically we would use an alternative flag of `-p 8080:8080` - this would be an instruction to map port 8080 (the first number) on the local machine to port 8080 (the second number) in the container. However because we are using a shared server we cannot guarantee that port 8080 is available. Using the `-P` flag tells Docker to assign a random available port. We'll understand how docker knows to assign this random port to port 8080 in the container in the next lab exercise.
 
-3. You can now visit your Spring Boot application from the browser:
+3. You can now visit your Spring Boot application from the browser. First we need to find out which port that Docker has assigned to this container. We can do that by entering the commmand:
 
-```http://[hostname]:8081```
+`docker ps -f id=[the first few characters of the id of your container]`
 
-You can now see the running application in your browser:
+![Finding the port number](img/docker-finding-the-port-number.png)
+
+In the example shown the port number that has been assigned is 49155.
+
+Now we can visit the url in our browser:
+
+`http://[server IP address]:[port number]`
+
+You should now see the running application in your browser:
 
 ![Running application](img/payments-webpage.png)
 
 This means that you are now visiting a Docker container, running in a Docker host, via port forwarding from a browser. That is pretty cool!
 
-4. Finally, terminate your container using docker rm -f [2 digits]. You can work out how to find the two digits (hint: use docker ps).
-
+4. Finally, terminate and destroy your container using `docker rm -f [the first few characters of the id of your container]`. 
 
 ## Review
 Congratulations. You have now successfully  downloaded and launched a docker container, and then configured the ports so it can be accessed externally.
