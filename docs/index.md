@@ -28,3 +28,9 @@ In this exercise, you will deploy two applications to the OpenShift cluster, wit
 [Try Deploying with pipelines (Github version)](module6_openshift4_pipelines.md)
 
 [Try Deploying with pipelines (Bitbucket version)](module6_openshift4_pipelines_bitbucket.md)
+
+
+### Introduction to Openshift 4 Lab
+This is a cut-down version of lab 4 which is designed to be used for half-day Clould/Openshift workshops, where the students are not completing any other labs. Do not attempt this lab if you are working through the above!
+
+[Try Introduction to Openshift 4](openshift_intro_lab.md)
