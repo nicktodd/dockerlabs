@@ -245,23 +245,27 @@ The output will look something like the below:
 
 ```docker run -P -d payments[your-name]```
 
-In this command the -P means "run the container exposing the default port" - a random port number will be assigned for the container (this was explained in the previous lab). Docker knows which port to map to in the container from the `EXPOSE 8080` line in teh Dockerfile.
+In this command the -P means "run the container exposing the default port" - a random port number will be assigned for the container (this was explained in the previous lab). Docker knows which port to map to in the container from the `EXPOSE 8080` line in the Dockerfile.
 
-The terminal will respond with the id of the container. 
+The terminal will respond with the id of the container. Make a note of the first 3 digits.
+
+Find out which port was assigned by running the command:
+
+`docker port [3 digits] | awk -F: '{ print $2}'`
 
 3. You can view the logs from the container by running the command 
 
-```docker logs [first few digits of the container ID]```
+```docker logs [3 digits]```
 
 4. After a short while the application should be running. To test it in the browser, now visit the following URL:
 
 ```http://[server IP address]:[port number]/api/country```
 
-You can also visit the root url for the application to view the API documentation.
+You can also visit the root url for the application in your browser to view the API documentation.
 
 ```http://[server IP address]:[port number]```
 
-5. Finally, terminate and destroy your container using `docker rm -f [the first few characters of the id of your container]`. 
+5. Finally, terminate and destroy your container using `docker rm -f [3 digits]`. 
 
 ## Review
 Congratulations. You have successfully created 2 Dockerfiles. We used the first to create a docker image that when run as a container would build a jar file. We launched that container and extracted the jar file. We then created a second docker image to run the jar file as an application. You then launched that image as a container, and was able to view it running via a Web Browser. 

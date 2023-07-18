@@ -42,15 +42,15 @@ An example of the kind of output you will see is shown below:
 
 ![container id](img/docker-container-id.png)
 
-Make a note of the first two characters of the ID (in the example above that is "cc").
+Make a note of the first three characters of the ID (in the example above that is "cc0").
 
 5. The container status is shown in the STATUS column - it should say "Exited" which means that it has stopped running.
 
 ![container status](img/docker-container-status-exited.png)
 
-If the container status shows the value "Up", which may be the case if using Ctrl-C didn't work, run the following command to stop the container, using the first 2 digits of your container's ID and without the square brackets.
+If the container status shows the value "Up", which may be the case if using Ctrl-C didn't work, run the following command to stop the container, using the first 3 digits of your container's ID and without the square brackets. (We need to use a sufficient number of the first few digits of the ID of the container to uniquely identify it. Normally 2 or 3 digits is sufficient although on systems with a lot of docker containers you may need to go to 4 digits.)
 
-```docker stop [2 digits]```
+```docker stop [3 digits]```
 
 The terminal will respond with the same 2 digits back. Now run docker ps -a again to check the container is stopped.
 
@@ -58,7 +58,7 @@ The terminal will respond with the same 2 digits back. Now run docker ps -a agai
 
 6. The stopped container can be turned back on, and this time it will be running in the background. Using the first two digits of your container's ID, run the following command without the square brackets:
 
-```docker start [2 digits]```
+```docker start [3 digits]```
 
 7. The response is simply the same two digits returned back. The container should be running. Verify that the status of the container is "Up" with docker ps again.
 
@@ -66,7 +66,7 @@ The terminal will respond with the same 2 digits back. Now run docker ps -a agai
 
 8. Now destroy the container. This is done using rm. The container is running so we will have to add a -f flag to force it.
 
-```docker rm -f [2 digits]```
+```docker rm -f [3 digits]```
 
 9. You can verify its destruction using docker ps -a.
 
@@ -84,17 +84,17 @@ The image for this application is hosted on a different repository (part of the 
 
  ```docker run -d -P public.ecr.aws/e2r0q3k0/payment-gateway:latest ```
 
- 2. When the container is running, you'll be presented with the id of the container. Note the first few characters of the ID.
+ 2. When the container is running, you'll be presented with the id of the container. Note the first three characters of the ID.
 
 The `-P` flag is telling our container to expose a port so that we can access it from the local machine / the internet. Typically we would use an alternative flag of `-p 8080:8080` - this would be an instruction to map port 8080 (the first number) on the local machine to port 8080 (the second number) in the container. However because we are using a shared server we cannot guarantee that port 8080 is available. Using the `-P` flag tells Docker to assign a random available port. We'll understand how docker knows to assign this random port to port 8080 in the container in the next lab exercise.
 
 3. You can now visit your Spring Boot application from the browser. First we need to find out which port that Docker has assigned to this container. We can do that by entering the commmand:
 
-`docker ps -f id=[the first few characters of the id of your container]`
+`docker port [3 digits] | awk -F: '{ print $2}'`
 
 ![Finding the port number](img/docker-finding-the-port-number.png)
 
-In the example shown the port number that has been assigned is 49155.
+In the example shown the port number that has been assigned is 49153.
 
 Now we can visit the url in our browser:
 
