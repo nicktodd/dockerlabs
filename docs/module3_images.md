@@ -106,7 +106,7 @@ This does not actually do anything with the ports automatically, but it tells us
 6. Finally, we need to specify what happens when the container launches, which is to **run the Jar**. Add the following line:
 
 ```
-ENTRYPOINT [ "sh", "-c", "java  -jar /app.jar" ]
+ENTRYPOINT [ "java","-jar","/app.jar" ]
 ```
 
 This line specifies to run a shell with the java command, specifying the fact it is a jar with -jar and then specifying the name of the Jar file. 
@@ -117,7 +117,7 @@ This line specifies to run a shell with the java command, specifying the fact it
 FROM openjdk:8
 COPY target/payments-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-ENTRYPOINT [ "sh", "-c", "java  -jar /app.jar" ]
+ENTRYPOINT [ "java","-jar","/app.jar" ]
 ```
 
 8. To save the file, press **Ctrl+O**, then press **Enter**. To exit the editor, press **Ctrl+X**. 
