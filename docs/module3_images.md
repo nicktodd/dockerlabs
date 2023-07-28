@@ -29,156 +29,50 @@ Then we can execute the command to build the jar file with
 
 The jar file will be placed in a sub folder named `target` and is called `payments-0.0.1-SNAPSHOT.jar`.
 
-We do **not** want to do this process directly on the machine we are using, as it will require us to first install and configure the required software, such as git and Java. Instead we will therefore run this entire build process inside its own docker container. This approach also means we can guarantee that whenever we build our project, it is in a clean environment and is a fully repeatable exercise.
+We do **not** want to do this process directly on the machine we are using, as it will require us to first install and configure the required software, such as Java. Instead we will therefore run the Maven build process inside its own docker container. This approach also means we can guarantee that whenever we build our project, it is in a clean environment and is a fully repeatable exercise.
 
 ## Part 2: Create a working folder
 **This step is only required if you are using a shared server, to keep your work separate from other users of the same server**
 
-1. **Create a folder for your own use** using the following command. Substitute your own name for the part in [].
+1. **Create a folder for your own use** using the following commands. Substitute your own name for the part in [].
 
-```md [your-name]```
+```cd```
+
+```mkdir [your-name]```
 
 2. **Navigate into that folder** with 
 
 ```cd [your-name]```
 
-## Part 3: Create a Dockerfile for the build container
+## Part 3: Clone the repository
 
-We will now create a Dockerfile for an image with the purpose of building the Spring application's jar file. The container will be short-lived (sometimes called ephemeral). We will start the container, use it to build the jar file, copy the jar file from the container to our local machine and then destroy the container. 
+We will now **clone the repository** so that we have the files ready to build. Run the command:
 
-1. We will first **create a script file** which will run the build process - this script will be executed **inside** the docker container.  **Run the following command** (note that this assumes you are going to use nano. Feel free to create the file some other way if you prefer):
-
-```nano build.sh```
-
-You will be presented with the editor view. 
-
-2. Edit the file so that it contains the steps required to create the jar file, as described in part 1:
-
-```
-#! /bin/bash
 git clone https://github.com/vppmatt/paymentgateway-standalone.git
-cd paymentgateway-standalone
-chmod a+x mvnw
-./mvnw package
-```
 
-3. To save the file, press **Ctrl+O**, then press **Enter**. To exit the editor, press **Ctrl+x**. 
+## Part 4: Build the jar file
 
-4. Now to **create the Dockerfile** that will define the build container, **run the following command**:
+We will use a Docker container to build the Spring application's jar file. The container will be short-lived (sometimes called ephemeral). This container can be defined, created and destroyed with a single command. **Run the following command**:
 
-```nano Dockerfile```
+```docker run -it --rm -v $PWD:/src -v $HOME/.m2:/root/.m2 -w /src maven:3.9.3-eclipse-temurin-20-alpine mvn package```
 
-You will be presented with the editor view. 
-   
-3. The first thing we need to specify is the parent image. For this we will use a standard image that already includes the JRE and git. **So add the following line** to your Dockerfile.
+To understand this command:
 
-```
-FROM openjdk:8
-```
+```docker run -it``` - run the docker container in interactive mode. Although we don't expect to interact with the container, by using this flag we will see the output, and if the process does prompt the user to enter any information, then we will get the chance to do this.
 
-4. Now we need to copy the script file we just created into the image. **Add in the following line**:
+```--rm``` - remove the docker container when it exits. 
 
-```
-COPY build.sh build.sh
-```
+``` -v $PWD:/src ``` - this will map the present working folder to a folder called src in the container. So the source code that we have just cloned is now available inside the container.
 
-5. Before the container starts we want to make sure this file can be executed, so we will **insert a command** to change its attributes:
+``` -v $HOME/.m2:/root/.m2``` - The Maven build process downloads a lot of files - we are mapping the folder that these files are downloaded to on the local machine to the equivalent folder inside the image. This means that future builds will be faster as the files will already have been downloaded.
 
-```
-RUN chmod a+x build.sh
-```
+``` -w /src ``` - This sets the working folder inside the containr to the src folder (where we mapped the source code)
 
-6. Finally, we need to specify what happens when the container launches, which is to execute our script. **Add the following line**:
+``` maven:3.9.3-eclipse-temurin-20-alpine ``` - this is the name of the image that should be used to build the container. It will be obtained from dockerhub if we don't already have a copy locally. Note this a particular version of the maven image, specified by the tag (3.9.3-eclipse-temurin-20-alpine) which is a lightweight image with all the required software pre-installed and configured to build our code.
 
-```
-ENTRYPOINT [ "sh", "-c", "./build.sh" ]
-```
+```mvn package``` - finally this is the command required to build the jar file.
 
-
-7. The complete Dockerfile should appear as shown below.
-
-```
-FROM openjdk:8
-COPY build.sh build.sh
-RUN  chmod a+x build.sh
-ENTRYPOINT ["sh", "-c", "./build.sh"]
-```
-
-8. To save the file, press **Ctrl+O**, then press **Enter**. To exit the editor, press **Ctrl+x**. 
-
-
-## Part 4: Create an image from the Dockerfile and then run it as a container.
-We could build an image from this Dockerfile (**don't do this yet!**), then run the docker container from this image. Because the container is short-lived, when the build process has finished, the container will terminate. We need to then copy the jar file created inside the container to our local machine.
-
-As this process requires a number of commands to be executed in sequence, and so that this process can be re-run in the future, we will create a script file containing the required steps.
-
-1. Using your editor, **create a new file** called createJar.sh.
-
-```nano createJar.sh```
-
-2. **Edit the file contents** to look like this (replace [your-name] with your name)
-
-```
-if [ -d "./app.jar" ]
-then
-  rm -f app.jar
-fi
-
-docker build -t pgbuilder[yourname] .
-docker run --name pgbc[yourname] pgbuilder[yourname]
-docker cp pgbc[yourname]:/paymentgateway-standalone/target/payments-0.0.1-SNAPSHOT.jar app.jar
-docker rm -f pgbc[yourname]
-```
-
-3. To save the file, press **Ctrl+O**, then press **Enter**. To exit the editor, press **Ctrl+x**. 
-
-We'll now understand what this file is doing:
-
-```
-if [ -d "./app.jar" ]
-then
-  rm -f app.jar
-fi
-```
-
-Because we could run the file multiple times, the jar file might already exist on our local machine, so we first check if it is there, and if it is we remove it.
-
-```
-docker build -t pgbuilder[yourname] .
-```
-
-This command creates an image from the Dockerfile you created. We are calling the image pgbuilder - here pg is a shorthand for payment gatgeway, the name of our application. Because multiple users will be sharing same machine for this exercise, we want to ensure that this image name is unique, so we are including our own name when naming the image. Take care to include the final period with this command to tell Docker that the Dockerfile is in the current folder.
-
-```
-docker run --name pgbc[yourname] pgbuilder[yourname]
-```
-
-This step starts the container. It gives the container a specific name, which again we want to be unique. (pgbc = payment gateway build container). We need to give the container a specific name so that we can extract files from it - if we don't do this we need to work out what ID the container has been given if we are to interact with it. 
-
-Normally we use the `-d` argument to run containers in detatched mode, however in this instance we want to wait for the container to exit as this means that the build script will have finished and our jar file will hve been created. 
-
-```
-docker cp pgbc[yourname]:/paymentgateway-standalone/target/payments-0.0.1-SNAPSHOT.jar app.jar
-```
-
-This command will copy the jar file that was created inside the container to a local file which will be called app.jar. The container doesn't need to be running for this command to work. 
-
-```
-docker rm -f pgbc[yourname]
-```
-
-Finally we remove the container. We need to do that so that next time we execute our script a new container can be created with the same name. 
-
-
-4. We are now finally ready to execute this script and build the jar file. **Run the following commands**:
-
-```chmod a+x createJar.sh```
-
-```./createJar.sh```
-
-5. After a short while the process will finish. Enter the following command to **check that the jar file is now present** in your working folder:
-
-```ls```
+Because we have mapped the current folder to the working folder in the container, when the jar file is built it will be available in the target subfolder on our server. 
 
 ## Part 5 Create a Dockerfile to run the application
 
@@ -199,7 +93,7 @@ FROM openjdk:8
 4. Now we need to **copy the JAR file** we created into the image.
 
 ```
-COPY app.jar app.jar
+COPY target/payments-0.0.1-SNAPSHOT.jar app.jar
 ```
 
 5. To **specify which port** will need to be exposed upon launch, we can add an EXPOSE line, so add the following line to your Dockerfile:
@@ -222,7 +116,7 @@ This line specifies to run a shell with the java command, specifying the fact it
 
 ```
 FROM openjdk:8
-COPY app.jar app.jar
+COPY target/payments-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT [ "sh", "-c", "java  -jar /app.jar" ]
 ```
