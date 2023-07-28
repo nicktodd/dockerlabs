@@ -59,7 +59,7 @@ The pom.xml file can be viewed at <https://github.com/vppmatt/paymentgateway-sta
 
 7. Paste this value into the **Git Repo url** box
 
-8. After a few seconds the screen should say that a builder image has been detected. This means that OpenShift knows how to deploy this application - we do not need to clone the git repository, build the Jar file, or write a Dockerfile because Openshift knows how to do all of these tasks. However by default it will use the latest version of Java, so we will change that to use the version that the project expects.
+8. After a few seconds the screen will say that it can build the image using the dockerfile contained in the repository. This will work fine but we don't even need to have a dockerfile. If we didn't have one OpenShift would still know how to deploy this application. It knows it needs to clone the git repository, build the Jar file, and create a Dockerfile. We will see this by changing the settings to build the applicaiton from source code.
 
 Click on **Edit Import Strategy**.
 
