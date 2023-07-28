@@ -34,7 +34,7 @@ We do **not** want to do this process directly on the machine we are using, as i
 ## Part 2: Create a working folder
 **This step is only required if you are using a shared server, to keep your work separate from other users of the same server**
 
-1. **Create a folder for your own use** using the following commands. Substitute your own name for the part in [].
+1. **Create a folder for your own use** using the following commands. Substitute your own name for the part in [ ].
 
 ```cd```
 
@@ -46,15 +46,16 @@ We do **not** want to do this process directly on the machine we are using, as i
 
 ## Part 3: Clone the repository
 
-We will now **clone the repository** so that we have the files ready to build. Run the command:
+1. We will now **clone the repository** so that we have the files ready to build. Run the command:
 
-git clone https://github.com/vppmatt/paymentgateway-standalone.git
+```git clone https://github.com/vppmatt/paymentgateway-standalone.git```
+
 
 ## Part 4: Build the jar file
 
-We will use a Docker container to build the Spring application's jar file. The container will be short-lived (sometimes called ephemeral). This container can be defined, created and destroyed with a single command. **Run the following command**:
+1. We will use a Docker container to build the Spring application's jar file. The container will be short-lived (sometimes called ephemeral). This container can be defined, created and destroyed with a single command. **Run the following command**:
 
-```docker run -it --rm -v $PWD:/src -v $HOME/.m2:/root/.m2 -w /src maven:3.9.3-eclipse-temurin-20-alpine mvn package```
+```docker run -it --rm -v $PWD/paymentgateway-standalone:/src -v $HOME/.m2:/root/.m2 -w /src maven:3.9.3-eclipse-temurin-20-alpine mvn package```
 
 To understand this command:
 
@@ -62,7 +63,7 @@ To understand this command:
 
 ```--rm``` - remove the docker container when it exits. 
 
-``` -v $PWD:/src ``` - this will map the present working folder to a folder called src in the container. So the source code that we have just cloned is now available inside the container.
+``` -v $PWD/paymentgateway-standalone:/src ``` - this will map the project folder on the server to a folder called src in the container. So the source code that we have just cloned is now available inside the container.
 
 ``` -v $HOME/.m2:/root/.m2``` - The Maven build process downloads a lot of files - we are mapping the folder that these files are downloaded to on the local machine to the equivalent folder inside the image. This means that future builds will be faster as the files will already have been downloaded.
 
@@ -76,13 +77,11 @@ Because we have mapped the current folder to the working folder in the container
 
 ## Part 5 Create a Dockerfile to run the application
 
-Now that we have built the jar file, we can create a further Dockerfile to define the image that will actually execute our applicaiton. 
-
-Because we already have a file in our current folder called `Dockerfile`, we will name this one `AppDockerfile`. 
+Now that we have built the jar file, we can create a Dockerfile to define the image that will actually execute our applicaiton. 
 
 1. **Run the following command** to create the file and open the editor:
 
-```nano AppDockerfile```
+```nano Dockerfile```
 
 2. **Specify the same parent image** as we used for the builder container.
 
@@ -93,7 +92,7 @@ FROM openjdk:8
 4. Now we need to **copy the JAR file** we created into the image.
 
 ```
-COPY target/payments-0.0.1-SNAPSHOT.jar app.jar
+COPY paymentgateway-standalone/target/payments-0.0.1-SNAPSHOT.jar app.jar
 ```
 
 5. To **specify which port** will need to be exposed upon launch, we can add an EXPOSE line, so add the following line to your Dockerfile:
@@ -121,13 +120,13 @@ EXPOSE 8080
 ENTRYPOINT [ "sh", "-c", "java  -jar /app.jar" ]
 ```
 
-8. To save the file, press **Ctrl+O**, then press **Enter**. To exit the editor, press **Ctrl+x**. 
+8. To save the file, press **Ctrl+O**, then press **Enter**. To exit the editor, press **Ctrl+X**. 
     
 ## Part 6 Build the Image and Run the Container
 
-1. To build the image, we can use **docker build**. Remember we must specify a tag and then also the location of the Dockerfile. Because we are using a Dockerfile with a non standard name, we need to specify the file name with the -f flag.  **Run the following command** (take care to include the final period):
+1. To build the image, we can use **docker build**. Remember we must specify a tag and then also the location of the Dockerfile. **Run the following command** (take care to include the final period):
 
-```docker build -t payments[your-name] -f AppDockerfile .```
+```docker build -t payments[your-name] .```
 
 This will download the parent image that we specified at the top of the Dockerfile, the along with all of its layers. Once that is complete it will then build the image for you.
 
