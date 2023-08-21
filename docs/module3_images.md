@@ -115,7 +115,7 @@ This line specifies to run a shell with the java command, specifying the fact it
 
 ```
 FROM openjdk:8
-COPY target/payments-0.0.1-SNAPSHOT.jar app.jar
+COPY paymentgateway-standalone/target/payments-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT [ "java","-jar","/app.jar" ]
 ```
