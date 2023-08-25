@@ -7,6 +7,8 @@ In this exercise you will complete the following tasks:
 2. You will configure the trigger for the pipeline, so that changes to git automatically trigger the build and deployment processes
 3. Finally we'll create and run a second pipeline application which will be a front-end to connect to our Spring application, and we'll see how to configure it.
 
+Please note that this is a long lab, with a number of complicated steps - take care to follow each step carefully!
+
 ## Prerequisites
  **You will need to have your own Bitbucket account**. If you would prefer to use Github rather than Bitbucket, [use this lab instead](module6_openshift4_pipelines.md).
 
@@ -29,7 +31,7 @@ You will need to have a copy of the two projects in your own Bitbucket account s
 
 ![Fork Project](img/os4pipelines_fork_bitbucket.png)
 
-4. Create a new project (we suggest you call it payments). Do not edit the repository name and do not tick the box to make it a private repository.
+4. Create a new project (we suggest you call it payments). Do not edit the repository name. You can choose whether to make it a private or public repository.
 
 5. Click on **Fork repository**.
 
@@ -59,38 +61,67 @@ The pom.xml file can be viewed at <https://bitbucket.org/neuedamats/paymentgatew
 
 7. Paste this value into the **Git Repo url** box. Remove the words `git clone` at the start of the line. You must also remove the username from the url. For example it will initially be in the format `https://your-username@bitbucket.org...`.  Tou must change this to `https://bitbucket.org...`
 
-**BE CAREFUL with this step** - if you have the URL in the correct format, then the system will show the word "validated" below the URL. If it says "URL is valid but a git type could not be identified." then you have not got the URL in the correct format.
+**BE CAREFUL with this step** - if you have the URL in the correct format, then the system will show the word "validated" below the URL. If it says "URL is valid but a git type could not be identified." then you may not have not got the URL in the correct format.
 
 ![Valid Bitbucket URL](img/validated_git_url_bitbucket.png)
 
-8. After a few seconds the screen should say that a builder image has been detected. This means that OpenShift knows how to deploy this application - we do not need to clone the git repository, build the Jar file, or write a Dockerfile because Openshift knows how to do all of these tasks. However by default it will use the latest version of Java, so we will change that to use the version that the project expects.
+8. It is important that you supply BitBucket credentials **every time** you create a deployment in this way, even if your repo is public. This is because BitBucket limits the amount of anonymous connections that can be made within an hour. If you do not supply credentials, you risk the git pull request timing out. To do this, you will need to know your bitbucket username, and create an app password.
+
+    **Bitbucket**
+- Click on the **settings** cog at the top right of the web page.
+- Click on **Personal Bitbucket settings**
+
+![Bitbucket settings](img/bitbucket-settings.png)
+
+- Note your **username** shown on this screen under the heading Bitbucket Profile Settings
+- On the left hand menu click on **App passwords**
+- Click on **Create app password**
+- Give the App password a **label** such as `Openshift`
+- Tick the **Read** box in the Repositories section. 
+- Click on **Create**
+
+![Bitbucket app passwords](img/bitbucket-app-password.png)
+
+- Make a note of the displayed password.
+
+    **Openshift**
+
+- Click on **Advanced Git Options**
+- In the **Source Secret** section, click on **Create Secret**
+- Give the secret a name such as `bitbucket`
+- Enter the username and password you obtained from Bitbucket
+- Click on **save**
+
+Note for future deployments, you can re-use this secret that was created within Openshift.
+
+9. After a few seconds the screen should say that a builder image has been detected. This means that OpenShift knows how to deploy this application - we do not need to clone the git repository, build the Jar file, or write a Dockerfile because Openshift knows how to do all of these tasks. However by default it will use the latest version of Java, so we will change that to use the version that the project expects. You do not normally need to do this, but we are exploring the options here so that we can understand what strategies are aviable for building our applications.
 
 Click on **Edit Import Strategy**.
 
-9. Ensure Java is selected and then change the **Builder Image version** to `openjdk-8-ubi8`.
+10. Ensure Java is selected and then change the **Builder Image version** to `openjdk-8-ubi8`.
 
 _Note: the Java versions presented contain either ubi or el in the name. These refer to the Redhat licensing options for Java - for details see: <https://developers.redhat.com/blog/2019/10/09/what-is-red-hat-universal-base-image#high_quality__the_security_and_operational_benefits_of_rhel>_
 
-10. Set the **Application name** to `payments`.
+11. Set the **Application name** to `payments`.
 
-11. Set the **Name** to `paymentgateway`.
+12. Set the **Name** to `paymentgateway`.
 
-12. Ensure the **Resource type** is set to `Deployment`.
+13. Ensure the **Resource type** is set to `Deployment`.
 
-13. Check the **Add pipeline** box. This will create a 3 step pipeline
+14. Check the **Add pipeline** box. This will create a 3 step pipeline
 (fetch the repository from Bitbucket, build the artifacts including the container, create/update the OpenShift deployment and all the resources it needs).
 
-14. Ensure the **target port** is set to `8080`.
+15. Ensure the **target port** is set to `8080`.
 
-15. Check the **create a route** box.
+16. Check the **create a route** box.
 
-16. Click on **create**.
+17. Click on **create**.
 
-17. When the topology screen is displayed, notice that the application circle has some additional icons. Click on the **build icon** to watch the build progress.
+18. When the topology screen is displayed, notice that the application circle has some additional icons. Click on the **build icon** to watch the build progress.
 
 ![Build icon](img/os4pipelines_build.png)
 
-18. When the build has completed, click on **Topology** in the left menu to get back to the
+19. When the build has completed, click on **Topology** in the left menu to get back to the
 topology screen, then click the **Open URL** icon to view the application.
 
 ![Open URL icon](img/os4pipelines_open_url.png)
@@ -225,4 +256,4 @@ To make our application work we need to provide the front end application with t
 
 ## Summary
 
-Congratulations - in this lab you have deployed two applications to the OpenShift cluster and set up a pipeline. If you commit a change to the code in your Github repositories, those changes will be automatically redeployed to the cluster.
+Congratulations - in this lab you have deployed two applications to the OpenShift cluster and set up a pipeline. If you commit a change to the code in your Bitbucket repositories, those changes will be automatically redeployed to the cluster.
