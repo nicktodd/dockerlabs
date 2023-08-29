@@ -80,9 +80,9 @@ The image for this application is hosted on a different repository (part of the 
 
 1. Launch a container from the image, but this time with two attributes
    - **-d** to run it in the background (detached)
-   - **-P** to handle the routing
+   - **-p** to handle the routing
 
- ```docker run -d -P public.ecr.aws/e2r0q3k0/payment-gateway:latest ```
+ ```docker run -d -p 8080:8080 public.ecr.aws/e2r0q3k0/payment-gateway:latest ```
 
  2. When the container is running, you'll be presented with the id of the container. Note the first three characters of the ID.
 
