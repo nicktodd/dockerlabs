@@ -86,19 +86,12 @@ The image for this application is hosted on a different repository (part of the 
 
  2. When the container is running, you'll be presented with the id of the container. Note the first three characters of the ID.
 
-The `-P` flag is telling our container to expose a port so that we can access it from the local machine / the internet. Typically we would use an alternative flag of `-p 8080:8080` - this would be an instruction to map port 8080 (the first number) on the local machine to port 8080 (the second number) in the container. However because we are using a shared server we cannot guarantee that port 8080 is available. Using the `-P` flag tells Docker to assign a random available port. We'll understand how docker knows to assign this random port to port 8080 in the container in the next lab exercise.
+The `-P` flag is telling our container to expose port 8080 so that we can access it from the local machine / the internet.
 
-3. You can now visit your Spring Boot application from the browser. First we need to find out which port that Docker has assigned to this container. We can do that by entering the commmand:
-
-`docker port [3 digits] | awk -F: '{ print $2}'`
-
-![Finding the port number](img/docker-finding-the-port-number.png)
-
-In the example shown the port number that has been assigned is 49153.
-
+1. You can now visit your Spring Boot application from the browser. 
 Now we can visit the url in our browser:
 
-`http://[server IP address]:[port number]`
+`http://[server IP address]:8080`
 
 You should now see the running application in your browser:
 
