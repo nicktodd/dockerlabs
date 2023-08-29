@@ -136,15 +136,11 @@ The output will look something like the below:
 
 2. Now the image is built, we can test it by running it as a container. To run it we can use an almost identical command to the one we used in Module 2. **Start the container** with the following:
 
-```docker run -P -d payments[your-name]```
+```docker run -p 8080:8080 -d payments[your-name]```
 
-In this command the -P means "run the container exposing the default port" - a random port number will be assigned for the container (this was explained in the previous lab). Docker knows which port to map to in the container from the `EXPOSE 8080` line in the Dockerfile.
+In this command the -p means "run the container exposing port 8080, and map that to port 8080 on the host machine".
 
 The terminal will respond with the id of the container. Make a note of the first 3 digits.
-
-Find out which port was assigned by running the command:
-
-`docker port [3 digits] | awk -F: '{ print $2}'`
 
 3. You can view the logs from the container by running the command 
 
@@ -152,11 +148,11 @@ Find out which port was assigned by running the command:
 
 4. After a short while the application should be running. To test it in the browser, now visit the following URL:
 
-```http://[server IP address]:[port number]/api/country```
+```http://[server IP address]:8080/api/country```
 
 You can also visit the root url for the application in your browser to view the API documentation.
 
-```http://[server IP address]:[port number]```
+```http://[server IP address]:8080```
 
 5. Finally, terminate and destroy your container using `docker rm -f [3 digits]`. 
 
