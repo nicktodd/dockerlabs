@@ -91,7 +91,7 @@ docker-compose logs -f
 
 Before we create the Jenkins pipeline, we will configure the database credentials in Jenkins so that these can be passed to the build script.
 
-**Note: To keep this lab simple ensure your git repository is publically readble (not a private repo)**
+**Note: To keep this lab simple ensure your git repository is publically readble (not a private repo). **
 
 1. **Visit the Jenkins web page** in your browser. You will need to use the IP address of your server - the url should be 
 
@@ -101,22 +101,22 @@ Before we create the Jenkins pipeline, we will configure the database credential
 
 3. From the Jenkins home page, click on **Manage Jenkins**.
 
-4. In the "Security" section click on "Configure credentials"
+4. In the **Security** section click on **Configure credentials**
 
-5. Under the "Domain" column click on "global".
+5. Under the **Domain** column click on **global**.
 
-6. Click on the "+ Add Credentials" button.
+6. Click on the **+ Add Credentials** button.
 
-7. Set the Kind to "Secret text"
+7. Set the **Kind** to **Secret text**
 
-8. Enter the database username (root) in the Secret and set the ID to DBUSER.
+8. Enter the database username (root) in the **Secret** and set the **ID** to DBUSER.
 
-9. Repeat the process to store the DBPASSWORD.
+9. **Repeat the process** to store the DBPASSWORD.
 
 
 ## 4. Create the back-end Jenkins pipeline
 
-1. In the Spring Boot application, create a file called `Jenkinsfile` in the root of the application with the following content. Substitute your git repository URL in the first section
+1. In the Spring Boot application, **create a file** called `Jenkinsfile` in the root of the application with the following content. Substitute your git repository URL in the first section
 
 ```
 pipeline {
@@ -168,38 +168,38 @@ pipeline {
 
 2. **Visit the Jenkins web page** in your browser. 
 
-3. Click on "Create a job"
+3. Click on **Create a job**
 
-4. Give the job the name such as "payments back end", click on "Pipeline", then click on OK.
+4. Give the job a **name** such as "payments back end", click on **Pipeline**, then click on **OK**.
 
-5. Tick the box for "Github project" and paste the url of your back-end repository into the box provided.
+5. Tick the box for **Github project** and paste the url of your back-end repository into the box provided.
 
-6. Click on Poll SCM and enter the following in the schedule box - this will check your repository for changes every 10 minutes. 
+6. Click on **Poll SCM** and enter the following in the schedule box - this will check your repository for changes every 10 minutes. 
 
 ```
 H/10 * * * *
 ```
 
-7. In the pipline section, change the definition to "Pipeline script from SCM".
+7. In the pipline section, change the definition to **Pipeline script from SCM**.
 
-8. Set the "SCM" to "Git"
+8. Set the **SCM** to **Git**
 
 9. Paste the url of your back-end repository into the box provided.
 
-10. Change the "Branches to build" box to "main".
+10. Change the **Branches to build** box to **main**.
 
-11. Ensure the script path says "Jenkinsfile".
+11. Ensure the script path says **Jenkinsfile**.
 
-12. Click on Save.
+12. Click on **Save**.
 
-13. Run the build process by clicking on "Build Now"
+13. Run the build process by clicking on **Build Now**.
 
-14. View the console output to check that the build runs successfully. You should also montior the docker-compose logs on the server to see the application restart!
+14. **View the console output** to check that the build runs successfully. You should also montior the docker-compose logs on the server to see the application restart!
 
 
 ## 5. Create the front-end Jenkins pipeline
 
-1. In the React application, create a file called `Jenkinsfile` in the root of the application with the following content. Substitute your git repository URL in the first section
+1. In the React application, **create a file** called `Jenkinsfile` in the root of the application with the following content. Substitute your git repository URL in the first section
 
 ```
 pipeline {
@@ -242,38 +242,37 @@ pipeline {
 
 2. **Visit the Jenkins web page** in your browser. 
 
-3. Click on "Create a job"
+3. Click on **Create a job**.
 
-4. Give the job the name such as "payments front end", click on "Pipeline", then click on OK.
+4. Give the job a **name** such as "payments front end", click on **Pipeline**, then click on **OK**.
 
-5. Tick the box for "Github project" and paste the url of your back-end repository into the box provided.
+5. Tick the box for **Github project** and paste the url of your back-end repository into the box provided.
 
-6. Click on Poll SCM and enter the following in the schedule box - this will check your repository for changes every 10 minutes. 
+6. Click on **Poll SCM** and enter the following in the schedule box - this will check your repository for changes every 10 minutes. 
 
 ```
 H/10 * * * *
 ```
 
-7. In the pipline section, change the definition to "Pipeline script from SCM".
+7. In the pipline section, change the definition to **Pipeline script from SCM**.
 
-8. Set the "SCM" to "Git"
+8. Set the **SCM** to **Git**
 
 9. Paste the url of your back-end repository into the box provided.
 
-10. Change the "Branches to build" box to "main".
+10. Change the **Branches to build** box to **main**.
 
-11. Ensure the script path says "Jenkinsfile".
+11. Ensure the script path says **Jenkinsfile**.
 
-12. Click on Save.
+12. Click on **Save**.
 
-13. Run the build process by clicking on "Build Now"
+13. Run the build process by clicking on **Build Now**.
 
-14. View the console output to check that the build runs successfully. You should also montior the docker-compose logs on the server to see the application restart!
+14. **View the console output** to check that the build runs successfully. You should also montior the docker-compose logs on the server to see the application restart!
 
 ## 6. Test the CI/CD pipelines
 
 1. Make some changes to the code and commit them to the git repositories. Wait for the Jenkins pipelines to rebuild the applications!
-
 
 ## Congratulations!
 
