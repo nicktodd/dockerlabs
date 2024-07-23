@@ -16,8 +16,8 @@ Then we can test our CI/CD processes by commiting code changes.
 1. **Stop** and remove the current Docker containers with the following commands:
 
 ```
-docker stop $(docker stop -a -q)
-docker rm $(docker stop -a -q)
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 ```
 
 2. **Create a new** file called `docker-compose.yaml` in the home folder. (Navigate to the home folder with `cd ~`)
