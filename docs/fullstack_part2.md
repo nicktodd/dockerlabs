@@ -19,7 +19,7 @@ https://github.com/vppmatt/fullstack-payments-ui
 
 ## 2. Create a production configuration for React application
 
-1. **create a new** file called `.env.production` in the `src/main/resources` folder. 
+1. **create a new** file called `.env.production` in the root of the project folder. 
 
 The content of the file should be:
 
@@ -81,9 +81,9 @@ CMD ["nginx", "-g", "daemon off;"]
 
 This dockerfile:
 -	Uses a base image containing the nginx web server
--   Removes unnecessary / default files from the image
+- Removes unnecessary / default files from the image
 -	Copies the built dist folder into the Docker image 
--   Copies the nginx configuration file we created into the Docker image
+- Copies the nginx configuration file we created into the Docker image
 -	Exposes port 3000 as the default port
 -	When the container is started it runs the web server.
 
