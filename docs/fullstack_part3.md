@@ -101,7 +101,7 @@ Before we create the Jenkins pipeline, we will configure the database credential
 
 3. From the Jenkins home page, click on **Manage Jenkins**.
 
-4. In the **Security** section click on **Configure credentials**
+4. In the section called Security, click on **Credentials**
 
 5. Under the **Domain** column click on **global**.
 
